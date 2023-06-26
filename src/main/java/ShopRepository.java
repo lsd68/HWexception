@@ -31,12 +31,15 @@ public class ShopRepository {
         return products;
     }
 
-    public void removeById(int id) {
-        Product prod = findById(id);
-        if (prod == null) {
-            throw new NotFoundException("Element with id: " + id + " not found");
+    // Этот способ мы рассматривали в теории в теме про композицию
+    public void remove(int id) {
+
+        Product productForRemove = findById(id);
+        if (productForRemove == null) {
+            throw new NotFoundException(id);
         }
         Product[] tmp = new Product[products.length - 1];
+
         int copyToIndex = 0;
         for (Product product : products) {
             if (product.getId() != id) {
@@ -47,7 +50,7 @@ public class ShopRepository {
         products = tmp;
     }
 
-    public Product findById(int id) {
+    private Product findById(int id) {
         for (Product product : products) {
             if (product.getId() == id) {
                 return product;

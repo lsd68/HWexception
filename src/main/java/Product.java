@@ -44,4 +44,7 @@ public class Product {
     public void setPrice(int price) {
         this.price = price;
     }
+    // геттеры + сеттеры
+    // на id только геттер — пусть будет неизменяемым для товара
 }
+

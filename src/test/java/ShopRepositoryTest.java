@@ -2,48 +2,38 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ShopRepositoryTest {
-    ShopRepository repo = new ShopRepository();
-    Product product1 = new Product(1, "Носки", 10);
-    Product product2 = new Product(2, "Трусы", 20);
-    Product product3 = new Product(3, "Майка", 30);
+class ShopRepositoryTest {
+    @Test
+    public void testRemoveWhenProductExist() {
 
-    @BeforeEach
-    public void Product() {
+        ShopRepository repo = new ShopRepository();
+        Product product1 = new Product(1, "Носки", 100);
+        Product product2 = new Product(20, "Трусы", 200);
+        Product product3 = new Product(300, "Майка", 300);
+
         repo.add(product1);
         repo.add(product2);
-    }
-
-    @Test
-    public void allProduct() {
-        repo.findAll();
-        Product[] expected = {product1, product2};
-        Product[] actual = repo.findAll();
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void addProduct() {
         repo.add(product3);
-        Product[] expected = {product1, product2, product3};
-        Product[] actual = repo.findAll();
-        Assertions.assertArrayEquals(expected, actual);
+        repo.remove(20);
 
+        Product[] actual = repo.findAll();
+        Product[] expected = {product1, product3};
+
+        Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void removeProduct() {
-        repo.removeById(1);
-        Product[] expected = {product2};
-        Product[] actual = repo.findAll();
-        Assertions.assertArrayEquals(expected, actual);
+    public void testRemoveWhenProductNotExist() {
 
-    }
+        ShopRepository repo = new ShopRepository();
+        Product product1 = new Product(1, "Носки", 100);
+        Product product2 = new Product(20, "Трусы", 200);
+        Product product3 = new Product(300, "Майка", 300);
 
-    @Test
-    public void removeNonExistingProduct() {
-        Assertions.assertThrows(NotFoundException.class, () -> {
-            repo.removeById(4);
-        });
+        repo.add(product1);
+        repo.add(product2);
+        repo.add(product3);
+
+        Assertions.assertThrows(NotFoundException.class,() -> repo.remove(2234));
     }
 }
